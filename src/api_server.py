@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
-from relay_controller import RelayController
-from config_manager import ConfigManager
-from logger import setup_logger
+from src.relay_controller import RelayController
+from src.config_manager import ConfigManager
+from src.logger import setup_logger
 import os
 
 app = Flask(__name__)

@@ -43,7 +43,7 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
    ```
 4. **Run tests:**
    ```powershell
-   pytest
+   python -m unittest discover -s tests
    ```
 
 ## API Endpoints

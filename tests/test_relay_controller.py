@@ -1,4 +1,5 @@
-import pytest
+
+import unittest
 from src.relay_controller import RelayController
 
 class MockLogger:
@@ -12,33 +13,38 @@ class MockGPIO:
     def output(self, pin, state): pass
     def cleanup(self): pass
 
-@pytest.fixture
-def relay_controller(monkeypatch):
-    monkeypatch.setattr('src.relay_controller.GPIO', MockGPIO())
-    pin_map = {1: 31, 2: 33, 3: 35, 4: 37}
-    logger = MockLogger()
-    return RelayController(pin_map, logger)
+class RelayControllerTestCase(unittest.TestCase):
+    def setUp(self):
+        # Patch GPIO in relay_controller module
+        import src.relay_controller
+        src.relay_controller.GPIO = MockGPIO()
+        pin_map = {1: 31, 2: 33, 3: 35, 4: 37}
+        logger = MockLogger()
+        self.relay_controller = RelayController(pin_map, logger)
 
-def test_turn_on_off(relay_controller):
-    relay_controller.turn_on(1)
-    assert relay_controller.status[1] is True
-    relay_controller.turn_off(1)
-    assert relay_controller.status[1] is False
+    def test_turn_on_off(self):
+        self.relay_controller.turn_on(1)
+        self.assertTrue(self.relay_controller.status[1])
+        self.relay_controller.turn_off(1)
+        self.assertFalse(self.relay_controller.status[1])
 
-def test_turn_all_on_off(relay_controller):
-    relay_controller.turn_all_on()
-    assert all(relay_controller.status.values())
-    relay_controller.turn_all_off()
-    assert not any(relay_controller.status.values())
+    def test_turn_all_on_off(self):
+        self.relay_controller.turn_all_on()
+        self.assertTrue(all(self.relay_controller.status.values()))
+        self.relay_controller.turn_all_off()
+        self.assertFalse(any(self.relay_controller.status.values()))
 
-def test_get_status(relay_controller):
-    relay_controller.turn_on(2)
-    status = relay_controller.get_status()
-    assert status[1]['state'] == 'OFF'
-    assert status[1]['id'] == 1
-    assert status[2]['state'] == 'ON'
-    assert status[2]['id'] == 2
+    def test_get_status(self):
+        self.relay_controller.turn_on(2)
+        status = self.relay_controller.get_status()
+        self.assertEqual(status[0]['state'], 'OFF')
+        self.assertEqual(status[0]['id'], 1)
+        self.assertEqual(status[1]['state'], 'ON')
+        self.assertEqual(status[1]['id'], 2)
 
-def test_invalid_id(relay_controller):
-    with pytest.raises(ValueError):
-        relay_controller.turn_on(5)
+    def test_invalid_id(self):
+        with self.assertRaises(ValueError):
+            self.relay_controller.turn_on(5)
+
+if __name__ == "__main__":
+    unittest.main()
