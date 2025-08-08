@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+*.sqlite3
+*.db
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Test & coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Log Files
+*.log
+
+# Misc
+*.swp
+*.bak

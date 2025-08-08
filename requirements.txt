@@ -1,0 +1,5 @@
+Flask
+RPi.GPIO
+PyYAML
+pytest
+requests
