@@ -39,7 +39,7 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
    Edit `config/settings.yaml` as needed for your environment.
 3. **Run the server:**
    ```powershell
-   python src/main.py
+   python -m src.main
    ```
 4. **Run tests:**
    ```powershell
