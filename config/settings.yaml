@@ -12,6 +12,7 @@ relays:
 logging:
   level: "INFO"
   file: "relay_controller.log"
+  console: false
 
 system:
   version: "1.0.0"
