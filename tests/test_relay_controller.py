@@ -8,9 +8,19 @@ class MockLogger:
 
 class MockGPIO:
     BOARD = OUT = None
+    _pin_states = {}
+
     def setmode(self, mode): pass
-    def setup(self, pin, mode): pass
-    def output(self, pin, state): pass
+
+    def setup(self, pin, mode): 
+        self._pin_states[pin] = False
+
+    def output(self, pin, state): 
+        self._pin_states[pin] = state
+
+    def input(self, pin):
+        return self._pin_states.get(pin, False)
+
     def cleanup(self): pass
 
 class RelayControllerTestCase(unittest.TestCase):

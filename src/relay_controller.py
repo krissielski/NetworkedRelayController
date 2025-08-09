@@ -49,7 +49,16 @@ class RelayController:
         self.logger.info("All relays OFF")
 
     def get_status(self) -> List[Dict[str, str]]:
-        return [{"id": rid, "state": "ON" if self.status[rid] else "OFF"} for rid in self.pin_map]
+        status_list = []
+        for rid, pin in self.pin_map.items():
+            try:
+                state = GPIO.input(pin)
+                status_str = "ON" if state else "OFF"
+            except Exception as e:
+                self.logger.error(f"Error reading pin {pin} for relay {rid}: {e}")
+                status_str = "UNKNOWN"
+            status_list.append({"id": rid, "state": status_str})
+        return status_list
 
     def _validate_id(self, relay_id: int):
         if relay_id not in self.pin_map:
