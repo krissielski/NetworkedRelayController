@@ -1,10 +1,11 @@
 # Networked Relay Controller
 
 ## Overview
-A production-ready, modular Python system for controlling a 4-port relay hat on Raspberry Pi 3 via a REST API. Designed for extensibility, robust error handling, and easy configuration.
+A modular Python system for controlling a 4-port relay hat on Raspberry Pi 3 via a REST API. Designed for extensibility, robust error handling, and easy configuration.
 
 ## Features
 - Control individual or all relays over the network
+- Desktop GUI application for easy relay control
 - REST API endpoints for relay and system management
 - Modular codebase with clear separation of concerns
 - Structured logging and external YAML configuration
@@ -13,7 +14,10 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
 ## Project Structure
 ```
 /
-├── config/settings.yaml         # Configuration file
+├── app/                        # GUI Application
+│   ├── relay_gui.py            # Desktop GUI client
+│   └── requirements.txt        # GUI dependencies
+├── config/settings.yaml        # Configuration file
 ├── src/                        # Source code
 │   ├── main.py                 # Entry point
 │   ├── api_server.py           # REST API server
@@ -25,13 +29,15 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
 │   ├── test_api_server.py
 │   ├── test_config_manager.py
 │   └── test_logger.py
-├── requirements.txt            # Python dependencies
-├── version.txt                 # Version info
-└── README.md                   # Documentation
+├── requirements.txt          # Server dependencies
+├── version.txt               # Version info
+└── README.md                 # Documentation
 ```
 
 ## Setup Instructions
-1. **Install dependencies:**
+
+### Server Setup
+1. **Install server dependencies:**
    ```powershell
    pip install -r requirements.txt
    ```
@@ -41,10 +47,28 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
    ```powershell
    python -m src.main
    ```
-4. **Run tests:**
+
+### GUI Application Setup
+1. **Install GUI dependencies:**
    ```powershell
-   python -m unittest discover -s tests
+   pip install -r app/requirements.txt
    ```
+2. **Run the GUI:**
+   ```powershell
+   # Connect to localhost (default)
+   python app/relay_gui.py
+
+   # Connect to specific IP
+   python app/relay_gui.py --host 192.168.1.100
+
+   # Connect to specific hostname and port
+   python app/relay_gui.py --host relay-controller.local -p 5000
+   ```
+
+### Testing
+```powershell
+python -m unittest discover -s tests
+```
 
 ## API Endpoints
 | Endpoint             | Method | Description                  |
@@ -62,9 +86,18 @@ A production-ready, modular Python system for controlling a 4-port relay hat on 
 - GPIO operations are mocked for safe testing
 - Minimum 80% code coverage target
 
+## GUI Features
+- Visual status indicators for each relay (green = ON, red = OFF)
+- Global controls for all relays (All ON/OFF)
+- Individual toggle buttons for each relay
+- Real-time status updates
+- Connection status monitoring
+- Error handling and user feedback
+
 ## Extending
 - Add new endpoints in `api_server.py`
 - Add new config options in `settings.yaml` and `config_manager.py`
+- Extend GUI features in `app/relay_gui.py`
 
 ## License
 MIT
