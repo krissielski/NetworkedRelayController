@@ -60,7 +60,7 @@ class RelayControllerGUI:
             relay_frame.grid(row=i+4, column=0, columnspan=3, pady=2)
             
             ttk.Label(relay_frame, text=f"Relay {relay_id}: ").grid(row=0, column=0)
-            led_label = ttk.Label(relay_frame, textvariable=self.relay_states[relay_id], foreground='red')
+            led_label = ttk.Label(relay_frame, textvariable=self.relay_states[relay_id], foreground='red', font=('TkDefaultFont', 18, 'bold'))
             led_label.grid(row=0, column=1)
             
             # Toggle button
